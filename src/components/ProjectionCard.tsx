@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Projection } from "../types/projection";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../context/cart/useCart";
 
 const ProjectionCard = ({ projection }: { projection: Projection }) => {
-  const { addToCart, getQuantity } = useCart();
+  const { addToCart, removeFromCart, getQuantity } = useCart();
+  const [selectedTime, setSelectedTime] = useState(projection.projectionTimes[0]);
   const quantityInCart = getQuantity(projection.id);
   const [showInput, setShowInput] = useState(quantityInCart > 0);
   const [quantity, setQuantity] = useState(quantityInCart || 1);
 
+  useEffect(() => {
+    setShowInput(quantityInCart > 0);
+    setQuantity(quantityInCart > 0 ? quantityInCart : 1);
+  }, [quantityInCart, selectedTime]);
+
   const handleReserve = () => {
-    addToCart(projection, quantity);
+    addToCart(projection, quantity, selectedTime);
     setShowInput(true);
   };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(1, parseInt(e.target.value) || 1);
+    const value = Math.max(0, parseInt(e.target.value) || 0);
     setQuantity(value);
-    addToCart(projection, value);
+
+    if (value === 0) {
+      removeFromCart(projection.id);
+      setShowInput(false);
+      setQuantity(1);
+    } else {
+      addToCart(projection, value, selectedTime);
+    }
   };
 
   return (
@@ -30,12 +43,36 @@ const ProjectionCard = ({ projection }: { projection: Projection }) => {
       </p>
       <p className="text-blue-600 font-bold mb-3">RSD {projection.ticketPrice}</p>
 
+      {!showInput ? (
+        <div className="mb-2">
+          <label className="block text-sm mb-1">Vreme projekcije:</label>
+          <select
+            className="w-full border rounded px-2 py-1"
+            value={selectedTime}
+            onChange={e => setSelectedTime(e.target.value)}
+          >
+            {projection.projectionTimes.map(time => (
+              <option key={time} value={time}>
+                {new Date(time).toLocaleString("sr-RS")}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div className="mb-2">
+          <label className="block text-sm mb-1">Vreme projekcije:</label>
+          <span className="text-sm text-gray-900 font-semibold px-2 py-1 bg-gray-100 rounded">
+            {new Date(selectedTime).toLocaleString("sr-RS")}
+          </span>
+        </div>
+      )}
+
       <div className="mt-auto flex items-center gap-2 transition-all duration-300">
         {showInput ? (
           <>
             <input
               type="number"
-              min={1}
+              min={0}
               value={quantity}
               onChange={handleQuantityChange}
               className="w-16 px-2 py-1 border rounded text-center"

@@ -1,4 +1,4 @@
-export type ProjectionStatus = 'reserved' | 'watched' | 'cancelled';
+export type ProjectionStatus = 'rezervisano' | 'odgledano' | 'otkazano';
 
 export interface Projection {
   id: string;
@@ -26,5 +26,6 @@ export interface UserProfile {
   name: string;
   email: string;
   address: string;
+  phone: string;
   watchedProjections: string[];
 }

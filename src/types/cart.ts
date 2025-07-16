@@ -1,6 +1,7 @@
-import { type Projection } from "./projection";
+import type { Projection } from "./projection";
 
 export interface CartItem {
   projection: Projection;
   quantity: number;
+  projectionTime: string;
 }

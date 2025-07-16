@@ -1,4 +1,4 @@
-import { type Projection } from "../types/projection";
+import type { Projection } from "../types/projection";
 
 // Mock data
 const mockProjections: Projection[] = [
@@ -14,7 +14,7 @@ const mockProjections: Projection[] = [
     projectionTimes: ["2025-07-20T19:00", "2025-07-21T21:00"],
     ticketPrice: 679,
     reviews: [],
-    status: "reserved"
+    status: "rezervisano"
   },
   {
     id: "2",
@@ -28,13 +28,13 @@ const mockProjections: Projection[] = [
     projectionTimes: ["2025-07-20T17:00", "2025-07-22T20:00"],
     ticketPrice: 679,
     reviews: [],
-    status: "reserved"
+    status: "rezervisano"
   },
   {
     id: "3",
     title: "Interstellar",
     description: "A team of explorers travel through a wormhole in space.",
-    genre: "Adventure",
+    genre: "Sci-Fi",
     duration: 169,
     director: "Christopher Nolan",
     actors: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
@@ -42,7 +42,7 @@ const mockProjections: Projection[] = [
     projectionTimes: ["2025-07-19T20:00", "2025-07-23T21:30"],
     ticketPrice: 679,
     reviews: [],
-    status: "reserved"
+    status: "rezervisano"
   },
   {
     id: "4",
@@ -56,7 +56,7 @@ const mockProjections: Projection[] = [
     projectionTimes: ["2025-07-21T18:30", "2025-07-22T20:30"],
     ticketPrice: 679,
     reviews: [],
-    status: "reserved"
+    status: "rezervisano"
   },
   {
     id: "5",
@@ -70,19 +70,19 @@ const mockProjections: Projection[] = [
     projectionTimes: ["2025-07-18T20:00", "2025-07-19T23:00"],
     ticketPrice: 679,
     reviews: [],
-    status: "reserved"
+    status: "rezervisano"
   }
 ];
 
 // Mock API
 export const fetchProjections = async (): Promise<Projection[]> => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(mockProjections), 500); // 500ms delay
+    setTimeout(() => resolve(mockProjections), 500); // 500ms delay (Simulacija API poziva)
   });
 };
 
 export const getProjectionById = async (id: string): Promise<Projection | undefined> => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(mockProjections.find(p => p.id === id)), 300);
+    setTimeout(() => resolve(mockProjections.find(p => p.id === id)), 300); // 300ms delay (Simulacija API poziva)
   });
 };
